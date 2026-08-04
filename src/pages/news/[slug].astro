@@ -1,0 +1,104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PortableText from '../../components/PortableText.astro';
+import { client, urlFor } from '../../lib/sanity';
+import groq from 'groq';
+
+export async function getStaticPaths() {
+  let slugs = [];
+  try {
+    slugs = await client.fetch(groq`*[_type == "news" && defined(slug.current)].slug.current`);
+  } catch (e) {
+    console.error("Error fetching slugs for news paths:", e);
+  }
+  return slugs.map((slug: string) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+
+let post: any = null;
+try {
+  post = await client.fetch(groq`
+    *[_type == "news" && slug.current == $slug][0] {
+      title,
+      publishedAt,
+      coverImage,
+      excerpt,
+      body
+    }
+  `, { slug });
+} catch (e) {
+  console.error("Error fetching news post detail:", e);
+}
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const formattedDate = post.publishedAt
+  ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : 'Recently';
+
+const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).height(630).url() : null;
+---
+
+<Layout 
+  title={post.title} 
+  description={post.excerpt || `Read the latest post: ${post.title}`}
+  image={imageUrl || undefined}
+>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Back Link -->
+    <a 
+      href="/news" 
+      class="inline-flex items-center text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors mb-8 group"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 mr-2 group-hover:-translate-x-0.5 transition-transform duration-200">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+      </svg>
+      Back to News
+    </a>
+
+    <!-- Header -->
+    <header class="space-y-4 mb-8">
+      <div class="text-sm font-medium text-slate-400">
+        Published <time datetime={post.publishedAt}>{formattedDate}</time>
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        {post.title}
+      </h1>
+      
+      {post.excerpt && (
+        <p class="text-lg text-slate-500 font-medium italic border-l-4 border-brand-300 pl-4 py-1 leading-relaxed">
+          {post.excerpt}
+        </p>
+      )}
+    </header>
+
+    <!-- Cover Image -->
+    {imageUrl && (
+      <div class="mb-10 rounded-2xl overflow-hidden shadow-sm border border-slate-100 aspect-[1.91/1] bg-slate-50">
+        <img 
+          src={imageUrl} 
+          alt={post.title} 
+          class="w-full h-full object-cover"
+        />
+      </div>
+    )}
+
+    <!-- Content Body -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-10">
+      {post.body && post.body.length > 0 ? (
+        <PortableText blocks={post.body} />
+      ) : (
+        <p class="text-slate-400 italic text-center py-6">No body content provided for this article.</p>
+      )}
+    </div>
+  </article>
+</Layout>

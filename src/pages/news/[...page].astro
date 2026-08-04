@@ -1,0 +1,110 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { client } from '../../lib/sanity';
+import groq from 'groq';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  let posts = [];
+  try {
+    posts = await client.fetch(groq`
+      *[_type == "news"] | order(publishedAt desc) {
+        title,
+        slug,
+        publishedAt,
+        coverImage,
+        excerpt
+      }
+    `);
+  } catch (e) {
+    console.error("Error fetching news in paginated route:", e);
+  }
+  return paginate(posts, { pageSize: 6 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<Layout 
+  title={page.currentPage > 1 ? `News - Page ${page.currentPage}` : "News"} 
+  description="Full archive of news, announcements, and articles from the forum officers and members."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="border-b border-slate-200 pb-6 mb-10">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">News & Updates</h1>
+      <p class="text-slate-500 mt-2">Explore our archive of announcements, publications reviews, and insights.</p>
+    </div>
+
+    <!-- News Grid / Empty State -->
+    {page.data && page.data.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {page.data.map((post: any) => (
+          <NewsCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20 bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="w-16 h-16 text-slate-300 mx-auto mb-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v3.75m-18 0A2.25 2.25 0 0 0 5.25 12h13.5M3 12h18" />
+        </svg>
+        <p class="text-slate-500 text-lg font-semibold">No news articles found</p>
+        <p class="text-slate-400 text-sm mt-1">There are no updates in the database at the moment.</p>
+      </div>
+    )}
+
+    <!-- Pagination Navigation -->
+    {page.lastPage > 1 && (
+      <nav class="flex items-center justify-between border-t border-slate-200 px-4 sm:px-0 pt-6">
+        <div class="flex w-0 flex-grow">
+          {page.url.prev ? (
+            <a 
+              href={page.url.prev} 
+              class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-semibold text-slate-500 hover:border-slate-300 hover:text-slate-700 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="mr-3 h-5 w-5 text-slate-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+              </svg>
+              Previous
+            </a>
+          ) : (
+            <span class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-semibold text-slate-300 cursor-not-allowed select-none">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="mr-3 h-5 w-5 text-slate-200">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+              </svg>
+              Previous
+            </span>
+          )}
+        </div>
+        
+        <div class="hidden md:flex">
+          <span class="text-sm text-slate-500 pt-4">
+            Showing Page <span class="font-bold text-slate-900">{page.currentPage}</span> of <span class="font-bold text-slate-900">{page.lastPage}</span>
+          </span>
+        </div>
+
+        <div class="flex w-0 flex-grow justify-end">
+          {page.url.next ? (
+            <a 
+              href={page.url.next} 
+              class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-semibold text-slate-500 hover:border-slate-300 hover:text-slate-700 transition-colors"
+            >
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="ml-3 h-5 w-5 text-slate-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+              </svg>
+            </a>
+          ) : (
+            <span class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-semibold text-slate-300 cursor-not-allowed select-none">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="ml-3 h-5 w-5 text-slate-200">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+              </svg>
+            </span>
+          )}
+        </div>
+      </nav>
+    )}
+  </div>
+</Layout>

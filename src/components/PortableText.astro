@@ -1,0 +1,86 @@
+---
+import { urlFor } from '../lib/sanity';
+
+interface Props {
+  blocks: any[];
+}
+
+const { blocks = [] } = Astro.props;
+
+function renderBlock(block: any) {
+  if (!block) return '';
+
+  if (block._type === 'block') {
+    const style = block.style || 'normal';
+    const markDefs = block.markDefs || [];
+
+    // Render children spans with decorators and annotations
+    const content = block.children
+      .map((child: any) => {
+        let text = child.text;
+        if (!text) return '';
+
+        // Safe HTML characters escaping
+        text = text
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+
+        if (child.marks && child.marks.length > 0) {
+          child.marks.forEach((mark: string) => {
+            const linkDef = markDefs.find((def: any) => def._key === mark);
+            if (linkDef && linkDef._type === 'link') {
+              text = `<a href="${linkDef.href}" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:text-brand-800 underline font-medium transition-colors">${text}</a>`;
+            } else if (mark === 'strong') {
+              text = `<strong class="font-bold text-slate-900">${text}</strong>`;
+            } else if (mark === 'em') {
+              text = `<em class="italic text-slate-700">${text}</em>`;
+            } else if (mark === 'code') {
+              text = `<code class="bg-slate-100 text-brand-700 px-1.5 py-0.5 rounded font-mono text-sm border border-slate-200">${text}</code>`;
+            } else if (mark === 'underline') {
+              text = `<span class="underline decoration-brand-400 decoration-2">${text}</span>`;
+            }
+          });
+        }
+        return text;
+      })
+      .join('');
+
+    switch (style) {
+      case 'h1':
+        return `<h1 class="text-3xl font-bold text-slate-900 mt-8 mb-4 border-b border-slate-100 pb-2">${content}</h1>`;
+      case 'h2':
+        return `<h2 class="text-2xl font-bold text-slate-900 mt-6 mb-3">${content}</h2>`;
+      case 'h3':
+        return `<h3 class="text-xl font-semibold text-slate-900 mt-5 mb-2">${content}</h3>`;
+      case 'h4':
+        return `<h4 class="text-lg font-medium text-slate-900 mt-4 mb-2">${content}</h4>`;
+      case 'blockquote':
+        return `<blockquote class="border-l-4 border-brand-500 pl-4 italic text-slate-600 my-4 bg-slate-50 py-2 pr-2 rounded-r">${content}</blockquote>`;
+      case 'normal':
+      default:
+        return `<p class="text-slate-600 leading-relaxed mb-4">${content}</p>`;
+    }
+  }
+
+  // Handle embedded images in Portable Text
+  if (block._type === 'image') {
+    const imageUrl = urlFor(block).url();
+    const alt = block.alt || 'CMS Image';
+    if (imageUrl) {
+      return `
+        <figure class="my-6 block">
+          <img src="${imageUrl}" alt="${alt}" class="w-full max-h-[450px] object-cover rounded-lg shadow-sm border border-slate-100" />
+          ${block.alt ? `<figcaption class="text-sm text-slate-500 mt-2 text-center">${block.alt}</figcaption>` : ''}
+        </figure>
+      `;
+    }
+  }
+
+  return '';
+}
+
+const htmlContent = blocks.map(renderBlock).join('');
+---
+
+<div class="prose max-w-none prose-slate" set:html={htmlContent} />

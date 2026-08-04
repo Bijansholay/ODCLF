@@ -1,0 +1,22 @@
+{
+  "name": "odclf-studio",
+  "private": true,
+  "version": "1.0.0",
+  "main": "package.json",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "clean": "sanity clean"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^6.8.0",
+    "styled-components": "^6.1.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}

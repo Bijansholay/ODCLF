@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PublicationCard from '../components/PublicationCard.astro';
+import { client } from '../lib/sanity';
+import groq from 'groq';
+
+let publications = [];
+
+try {
+  // Query publication documents, dereferencing the file asset reference to get the file url
+  publications = await client.fetch(groq`
+    *[_type == "publication"] | order(publishedDate desc) {
+      title,
+      authors,
+      publishedDate,
+      abstract,
+      "fileUrl": file.asset->url,
+      coverImage
+    }
+  `);
+} catch (e) {
+  console.error("Error fetching publications:", e);
+}
+---
+
+<Layout title="Publications" description="Browse through the publications, reports, and academic papers written by our members.">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <!-- Header -->
+    <div class="border-b border-slate-200 pb-6">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Publications & Papers</h1>
+      <p class="text-slate-500 mt-2">Explore the research, journal publications, and technical reports produced by our members.</p>
+    </div>
+
+    <!-- Publications List / Empty State -->
+    {publications && publications.length > 0 ? (
+      <div class="flex flex-col gap-8">
+        {publications.map((publication) => (
+          <PublicationCard publication={publication} />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20 bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-16 h-16 text-slate-300 mx-auto mb-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+        </svg>
+        <p class="text-slate-500 text-lg font-semibold">No publications found</p>
+        <p class="text-slate-400 text-sm mt-1">Research works and documents will display here once added to the CMS.</p>
+      </div>
+    )}
+  </div>
+</Layout>

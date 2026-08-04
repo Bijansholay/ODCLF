@@ -1,0 +1,93 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EventCard from '../../components/EventCard.astro';
+import { client } from '../../lib/sanity';
+import groq from 'groq';
+
+let upcomingEvents = [];
+let pastEvents = [];
+
+try {
+  const now = new Date().toISOString();
+
+  // Fetch upcoming events (ordered chronologically)
+  upcomingEvents = await client.fetch(groq`
+    *[_type == "event" && startDate >= $now] | order(startDate asc) {
+      title,
+      slug,
+      startDate,
+      endDate,
+      location,
+      description,
+      image,
+      registrationLink
+    }
+  `, { now });
+
+  // Fetch past events (ordered reverse-chronologically)
+  pastEvents = await client.fetch(groq`
+    *[_type == "event" && startDate < $now] | order(startDate desc) {
+      title,
+      slug,
+      startDate,
+      endDate,
+      location,
+      description,
+      image,
+      registrationLink
+    }
+  `, { now });
+} catch (e) {
+  console.error("Error fetching events in main index:", e);
+}
+---
+
+<Layout title="Events" description="Join our upcoming workshops, seminars, and events, or browse our archive of past discussions.">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+    <!-- Header -->
+    <div class="border-b border-slate-200 pb-6">
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Events Schedule</h1>
+      <p class="text-slate-500 mt-2">Participate in our workshops, speaker sessions, and community forums.</p>
+    </div>
+
+    <!-- Upcoming Events -->
+    <section class="space-y-8">
+      <div class="border-l-4 border-brand-500 pl-4 py-1">
+        <h2 class="text-2xl font-bold text-slate-900">Upcoming Events</h2>
+        <p class="text-sm text-slate-500 mt-0.5">Upcoming scheduled sessions. RSVP links are available inside active events.</p>
+      </div>
+
+      {upcomingEvents && upcomingEvents.length > 0 ? (
+        <div class="grid grid-cols-1 gap-8">
+          {upcomingEvents.map((event) => (
+            <EventCard event={event} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-slate-400 mx-auto mb-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+          </svg>
+          <p class="text-slate-500 font-medium">No upcoming events scheduled</p>
+          <p class="text-slate-400 text-sm mt-1 font-normal">Check back later or browse our past events archives below.</p>
+        </div>
+      )}
+    </section>
+
+    <!-- Past Events Archive -->
+    {pastEvents && pastEvents.length > 0 && (
+      <section class="space-y-8 pt-8 border-t border-slate-100">
+        <div class="border-l-4 border-slate-400 pl-4 py-1">
+          <h2 class="text-2xl font-bold text-slate-800">Past Events Archive</h2>
+          <p class="text-sm text-slate-500 mt-0.5">Browse slides, details, and schedules from our previous events.</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8">
+          {pastEvents.map((event) => (
+            <EventCard event={event} />
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</Layout>

@@ -1,0 +1,58 @@
+---
+import { urlFor } from '../lib/sanity';
+
+interface Props {
+  member: {
+    name: string;
+    role: string;
+    photo?: any;
+    bio?: string;
+    active: boolean;
+  };
+}
+
+const { member } = Astro.props;
+
+const imageUrl = member.photo
+  ? urlFor(member.photo).width(400).height(400).url()
+  : null;
+
+const initials = member.name
+  ? member.name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase()
+  : '??';
+---
+
+<div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
+  <!-- Photo / Placeholder -->
+  <div class="w-24 h-24 rounded-full overflow-hidden mb-4 bg-slate-100 shrink-0 border-2 border-brand-100 relative">
+    {imageUrl ? (
+      <img src={imageUrl} alt={member.name} class="w-full h-full object-cover" loading="lazy" />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-600 to-brand-700 text-white font-bold text-xl tracking-wider">
+        {initials}
+      </div>
+    )}
+  </div>
+
+  <!-- Name and Role -->
+  <h3 class="text-lg font-bold text-slate-900 leading-snug">{member.name}</h3>
+  <span class="inline-block mt-1 text-xs font-semibold uppercase tracking-wider text-brand-600 bg-brand-50 px-2.5 py-0.5 rounded-full mb-4">
+    {member.role}
+  </span>
+
+  <!-- Bio -->
+  {member.bio ? (
+    <p class="text-slate-500 text-sm leading-relaxed line-clamp-4">
+      {member.bio}
+    </p>
+  ) : (
+    <p class="text-slate-400 text-xs italic">
+      No biography provided.
+    </p>
+  )}
+</div>
