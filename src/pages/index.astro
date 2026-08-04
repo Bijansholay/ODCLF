@@ -40,113 +40,363 @@ try {
 } catch (e) {
   console.error("Error fetching events from Sanity:", e);
 }
+
+const coreValues = [
+  "Academic Excellence", "Integrity", "Professionalism", 
+  "Unity and Mutual Respect", "Innovation", "Service to Humanity", 
+  "Accountability", "Collaboration", "Excellence in Leadership", 
+  "Community Development"
+];
+
+const objectives = [
+  "To foster unity, friendship, and professional collaboration among Chief Lecturers of Offa descent.",
+  "To promote multidisciplinary research and scholarly excellence.",
+  "To encourage collaborative research addressing developmental challenges in Offa and beyond.",
+  "To establish and maintain digital repositories of members' research outputs and innovations.",
+  "To publish scholarly journals, research compendia, newsletters, and other academic publications.",
+  "To mentor young academics and students.",
+  "To facilitate knowledge exchange through conferences, seminars, workshops, and public lectures.",
+  "To advise governments, institutions, traditional authorities, and community organisations through evidence-based policy recommendations.",
+  "To mobilise intellectual resources for sustainable community development.",
+  "To establish partnerships with universities, polytechnics, industries, research institutes, government agencies, and international organisations.",
+  "To recognise and celebrate academic excellence and outstanding service.",
+  "To encourage entrepreneurship, innovation, and commercialisation of research findings."
+];
+
+const strategicFocus = [
+  {
+    title: "Research for Community Development",
+    desc: "Promote research directed towards solving developmental challenges facing Offa and neighbouring communities."
+  },
+  {
+    title: "Research Repository",
+    desc: "Develop a digital repository for publications authored by members."
+  },
+  {
+    title: "Research Commercialisation",
+    desc: "Create a repository of innovations and research products requiring sponsorship, incubation, and commercialisation."
+  },
+  {
+    title: "ODCLF Peer-Reviewed Journal",
+    desc: "Establish and sustain an international multidisciplinary peer-reviewed journal published by the Forum."
+  },
+  {
+    title: "Research Grants",
+    desc: "Facilitate collaborative national and international grant applications."
+  },
+  {
+    title: "Annual Research Compendium",
+    desc: "Publish annual compilations of members' scholarly works."
+  },
+  {
+    title: "Academic Conferences",
+    desc: "Organise annual conferences, seminars, workshops, and distinguished lectures."
+  },
+  {
+    title: "Policy Advisory Services",
+    desc: "Provide evidence-based recommendations to the Offa Descendants Union, government, traditional institutions, and other stakeholders."
+  },
+  {
+    title: "Mentorship",
+    desc: "Mentor early-career academics, researchers, and students of Offa origin."
+  },
+  {
+    title: "Community Development",
+    desc: "Deploy members' expertise in engineering, technology, education, health, agriculture, management, ICT, environmental sustainability, and entrepreneurship for the benefit of Offa."
+  },
+  {
+    title: "Digital Transformation",
+    desc: "Develop and maintain the Forum's website, research repository, membership portal, and other digital platforms."
+  }
+];
+
+const aspirations = [
+  "ODCLF Research Institute",
+  "Offa Spectrum: A Multidisciplinary Journal of Research, Innovation and Community Development",
+  "Annual International Conference",
+  "Digital Research Repository",
+  "Research Endowment Fund",
+  "Young Researchers Mentorship Scheme",
+  "Research and Innovation Awards",
+  "International Academic Partnerships",
+  "Community Development Intervention Projects"
+];
 ---
 
-<Layout title="Home" description="Welcome to the Forum - a university hub for academic dialogue, news, member profiles, and research publications.">
+<Layout title="Home" description="Welcome to the Offa Descendants Chief Lecturers' Forum (ODCLF). A professional body of distinguished Chief Lecturers of Offa descent committed to advancing scholarship, innovation, and community development.">
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+  <section class="relative bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 text-white py-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-b border-brand-950">
     <div class="absolute inset-0 opacity-10">
       <div class="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px]"></div>
     </div>
     
     <div class="max-w-5xl mx-auto text-center relative z-10">
-      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 mb-6 uppercase tracking-wider">
-        Official University Forum
+      <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 mb-6 uppercase tracking-wider">
+        Offa Descendants Chief Lecturers' Forum
       </span>
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-        Fostering Academic Discourse <br class="hidden sm:inline" />& Research Collaboration
+        ODCLF
       </h1>
-      <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-        Connecting students, researchers, and officers through shared publications, regular academic events, and departmental updates.
+      <p class="text-xl sm:text-2xl font-medium text-brand-200 mb-8 max-w-3xl mx-auto italic">
+        "Knowledge • Innovation • Community Development"
       </p>
       
-      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
         <a 
-          href="/events" 
+          href="#about" 
           class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-lg bg-white text-brand-900 hover:bg-slate-50 transition-colors shadow-sm"
         >
-          View Events
+          Learn More
         </a>
         <a 
           href="/publications" 
           class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-slate-700 text-base font-medium rounded-lg text-slate-300 bg-slate-800/50 hover:bg-slate-800 hover:text-white transition-colors"
         >
-          Browse Publications
+          Research Repository
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Content Section -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
-    <!-- News Panel -->
-    <section class="space-y-8">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-100 pb-4">
-        <div>
-          <h2 class="text-3xl font-bold text-slate-900">Latest News & Updates</h2>
-          <p class="text-slate-500 mt-1">Stay informed with the latest announcements and articles.</p>
+  <!-- Welcome / Vision / Mission Section -->
+  <section id="about" class="bg-white py-20 border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Welcome Message -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="border-l-4 border-brand-600 pl-4 py-1">
+            <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Welcome Message</h2>
+          </div>
+          <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-4">
+            <p>
+              Welcome to the official website of the Offa Descendants Chief Lecturers' Forum (ODCLF).
+            </p>
+            <p>
+              ODCLF is a professional body of distinguished Chief Lecturers of Offa descent committed to advancing scholarship, innovation, and community development. The Forum serves as a platform for intellectual collaboration, multidisciplinary research, mentorship, and evidence-based engagement aimed at contributing meaningfully to the sustainable development of Offa, Nigeria, and the global community.
+            </p>
+            <p>
+              Through our collective expertise, we seek to inspire excellence, promote impactful research, strengthen educational advancement, and provide practical solutions to societal challenges.
+            </p>
+            <p class="font-medium text-slate-800">
+              We invite you to explore our activities, publications, members, and initiatives, and to partner with us in building a more prosperous and knowledge-driven society.
+            </p>
+            <p class="border-t border-slate-100 pt-4 font-semibold text-brand-700 italic">
+              Together, we advance knowledge. Together, we develop Offa.
+            </p>
+          </div>
         </div>
-        <a 
-          href="/news" 
-          class="inline-flex items-center text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors shrink-0"
-        >
-          View All News
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 ml-1">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-          </svg>
-        </a>
-      </div>
 
-      {news && news.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {news.map((post) => (
-            <NewsCard post={post} />
+        <!-- Vision & Mission -->
+        <div class="lg:col-span-5 space-y-6">
+          <!-- Vision -->
+          <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center space-x-2 text-brand-700 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              <h3 class="text-lg font-bold text-slate-900 uppercase tracking-wider">Vision</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              To be a foremost community of distinguished polytechnic academics, leveraging scholarship, innovation, and professional excellence to advance sustainable development, educational transformation, and the socio-economic progress of Offa and humanity.
+            </p>
+          </div>
+
+          <!-- Mission -->
+          <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center space-x-2 text-brand-700 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+              </svg>
+              <h3 class="text-lg font-bold text-slate-900 uppercase tracking-wider">Mission</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              To unite Chief Lecturers of Offa descent across Nigerian Polytechnics and beyond in promoting academic excellence, collaborative research, innovation, mentorship, policy advocacy, and community development through the application of knowledge and professional expertise.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values & Objectives -->
+  <section class="bg-slate-50 py-20 border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      
+      <!-- Core Values -->
+      <div class="space-y-8">
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="text-3xl font-bold text-slate-900">Core Values</h2>
+          <p class="text-slate-500 mt-2 text-sm sm:text-base">The foundational pillars that guide the decisions and actions of the Forum.</p>
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-4">
+          {coreValues.map((val) => (
+            <span class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm transition-transform hover:-translate-y-0.5 duration-200">
+              <span class="w-2 h-2 rounded-full bg-brand-500 mr-2.5"></span>
+              {val}
+            </span>
           ))}
         </div>
-      ) : (
-        <div class="text-center py-16 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-slate-400 mx-auto mb-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v3.75m-18 0A2.25 2.25 0 0 0 5.25 12h13.5M3 12h18" />
-          </svg>
-          <p class="text-slate-500 font-medium">No news posts found yet.</p>
-          <p class="text-slate-400 text-sm mt-1">News updates will appear here once published in the dashboard.</p>
-        </div>
-      )}
-    </section>
-
-    <!-- Events Panel -->
-    <section class="space-y-8">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-100 pb-4">
-        <div>
-          <h2 class="text-3xl font-bold text-slate-900">Upcoming Events</h2>
-          <p class="text-slate-500 mt-1">Academic workshops, conferences, and student forums.</p>
-        </div>
-        <a 
-          href="/events" 
-          class="inline-flex items-center text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors shrink-0"
-        >
-          View All Events
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 ml-1">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-          </svg>
-        </a>
       </div>
 
-      {upcomingEvents && upcomingEvents.length > 0 ? (
-        <div class="grid grid-cols-1 gap-6">
-          {upcomingEvents.map((event) => (
-            <EventCard event={event} />
+      <!-- Objectives -->
+      <div class="space-y-8 pt-8 border-t border-slate-200/60">
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="text-3xl font-bold text-slate-900">Objectives</h2>
+          <p class="text-slate-500 mt-2 text-sm sm:text-base">Our action goals to encourage growth, scholarship, and advocacy.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {objectives.map((obj, i) => (
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-sm flex items-start space-x-3.5 hover:border-brand-200 transition-colors duration-200">
+              <div class="w-7 h-7 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-sm shrink-0">
+                {i + 1}
+              </div>
+              <p class="text-slate-600 text-sm leading-relaxed">{obj}</p>
+            </div>
           ))}
         </div>
-      ) : (
-        <div class="text-center py-16 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-slate-400 mx-auto mb-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-          </svg>
-          <p class="text-slate-500 font-medium">No upcoming events listed.</p>
-          <p class="text-slate-400 text-sm mt-1">Check back later or check out the archive for past events.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Strategic Areas of Focus -->
+  <section class="bg-white py-20 border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="text-center max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold text-slate-900">Strategic Areas of Focus</h2>
+        <p class="text-slate-500 mt-2">Targeted domains where members apply academic and professional expertise.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {strategicFocus.map((focus) => (
+          <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-brand-200 hover:shadow-sm transition-all duration-300 flex flex-col justify-between">
+            <h3 class="font-bold text-slate-900 text-base mb-3 leading-snug">{focus.title}</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">{focus.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Membership & Long-Term Aspirations -->
+  <section class="bg-slate-900 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16">
+      
+      <!-- Membership -->
+      <div class="space-y-6 lg:pr-8">
+        <h2 class="text-3xl font-bold text-white border-l-4 border-brand-500 pl-4 py-1">Membership</h2>
+        <p class="text-slate-300 leading-relaxed text-base">
+          Membership comprises Chief Lecturers of Offa descent serving in Nigerian Polytechnics and allied tertiary institutions, together with such other categories of membership as may be provided in the Constitution.
+        </p>
+        <div class="pt-4">
+          <a 
+            href="/members" 
+            class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold bg-brand-600 text-white hover:bg-brand-500 transition-colors"
+          >
+            Meet Our Members
+          </a>
         </div>
-      )}
-    </section>
-  </div>
+      </div>
+
+      <!-- Long-Term Aspirations -->
+      <div class="space-y-6">
+        <h2 class="text-3xl font-bold text-white border-l-4 border-brand-500 pl-4 py-1">Long-Term Aspirations</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+          {aspirations.map((asp) => (
+            <div class="flex items-center space-x-3 text-slate-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-brand-400 shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              <span class="text-sm font-medium">{asp}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Dynamic Content: News & Events -->
+  <section class="bg-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16">
+      
+      <!-- News Panel -->
+      <div class="space-y-8">
+        <div class="flex items-end justify-between border-b border-slate-100 pb-4">
+          <h2 class="text-2xl font-bold text-slate-900">Latest News & Updates</h2>
+          <a href="/news" class="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">
+            View All
+          </a>
+        </div>
+
+        {news && news.length > 0 ? (
+          <div class="space-y-6">
+            {news.slice(0, 2).map((post) => (
+              <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col sm:flex-row gap-4 hover:shadow-sm transition-shadow duration-300">
+                {post.coverImage && (
+                  <div class="w-full sm:w-28 h-20 shrink-0 bg-slate-100 rounded-lg overflow-hidden">
+                    <img src={urlFor(post.coverImage).width(200).height(150).url()} alt={post.title} class="w-full h-full object-cover" />
+                  </div>
+                )}
+                <div class="flex-grow flex flex-col justify-between">
+                  <h3 class="font-bold text-slate-900 hover:text-brand-600 text-sm line-clamp-2">
+                    <a href={`/news/${post.slug.current}`}>{post.title}</a>
+                  </h3>
+                  <p class="text-xs text-slate-400 font-medium mt-2">
+                    {new Date(post.publishedAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="text-slate-400 italic py-6">No news posts found yet.</p>
+        )}
+      </div>
+
+      <!-- Events Panel -->
+      <div class="space-y-8">
+        <div class="flex items-end justify-between border-b border-slate-100 pb-4">
+          <h2 class="text-2xl font-bold text-slate-900">Upcoming Events</h2>
+          <a href="/events" class="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">
+            View All
+          </a>
+        </div>
+
+        {upcomingEvents && upcomingEvents.length > 0 ? (
+          <div class="space-y-6">
+            {upcomingEvents.slice(0, 2).map((event) => (
+              <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col sm:flex-row gap-4 hover:shadow-sm transition-shadow duration-300">
+                {event.image && (
+                  <div class="w-full sm:w-28 h-20 shrink-0 bg-slate-100 rounded-lg overflow-hidden">
+                    <img src={urlFor(event.image).width(200).height(150).url()} alt={event.title} class="w-full h-full object-cover" />
+                  </div>
+                )}
+                <div class="flex-grow flex flex-col justify-between">
+                  <div>
+                    <h3 class="font-bold text-slate-900 hover:text-brand-600 text-sm line-clamp-1">
+                      <a href={`/events/${event.slug.current}`}>{event.title}</a>
+                    </h3>
+                    <p class="text-slate-400 text-xs mt-1.5 truncate">{event.location}</p>
+                  </div>
+                  <p class="text-xs text-brand-600 font-bold mt-2">
+                    {new Date(event.startDate).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="text-slate-400 italic py-6">No upcoming events scheduled.</p>
+        )}
+      </div>
+
+    </div>
+  </section>
 </Layout>

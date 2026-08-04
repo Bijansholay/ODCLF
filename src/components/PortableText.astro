@@ -71,7 +71,7 @@ function renderBlock(block: any) {
       return `
         <figure class="my-6 block">
           <img src="${imageUrl}" alt="${alt}" class="w-full max-h-[450px] object-cover rounded-lg shadow-sm border border-slate-100" />
-          ${block.alt ? `<figcaption class="text-sm text-slate-500 mt-2 text-center">${block.alt}</figcaption>` : ''}
+          ${block.alt ? '<figcaption class="text-sm text-slate-500 mt-2 text-center">' + block.alt + '</figcaption>' : ''}
         </figure>
       `;
     }
@@ -83,4 +83,4 @@ function renderBlock(block: any) {
 const htmlContent = blocks.map(renderBlock).join('');
 ---
 
-<div class="prose max-w-none prose-slate" set:html={htmlContent} />
+<div class="prose max-w-none prose-slate" set:html={htmlContent}></div>
