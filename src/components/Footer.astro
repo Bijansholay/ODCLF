@@ -1,5 +1,6 @@
 ---
 const currentYear = new Date().getFullYear();
+const studioUrl = import.meta.env.PUBLIC_SANITY_STUDIO_URL || 'https://manage.sanity.io';
 ---
 
 <footer class="bg-slate-900 text-slate-400 border-t border-slate-800">
@@ -38,7 +39,9 @@ const currentYear = new Date().getFullYear();
         </p>
         <div>
           <a
-            href="/studio"
+            href={studioUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             class="inline-flex items-center justify-center px-4 py-2 border border-slate-700 rounded-md text-sm font-medium text-white bg-slate-800 hover:bg-slate-700 transition-colors"
           >
             Access CMS Dashboard
