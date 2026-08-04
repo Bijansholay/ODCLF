@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import NewsCard from '../components/NewsCard.astro';
 import EventCard from '../components/EventCard.astro';
-import { client } from '../lib/sanity';
+import { client, urlFor } from '../lib/sanity';
 import groq from 'groq';
 
 // Fetch latest 3 news posts
