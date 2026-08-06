@@ -48,4 +48,108 @@ try {
       </div>
     )}
   </div>
+
+  <!-- Lightbox Modal for Publication Abstract -->
+  <div id="abstract-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-100 p-6 m-4 relative flex flex-col max-h-[85vh] overflow-hidden">
+      <!-- Close Button -->
+      <button id="close-abstract-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 focus:outline-none bg-slate-50 hover:bg-slate-100 rounded-full border border-slate-200/60 transition-colors" aria-label="Close modal">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Scrollable content -->
+      <div class="overflow-y-auto pr-2 space-y-4">
+        <div class="flex items-center space-x-2 text-xs text-slate-400">
+          <span id="modal-date"></span>
+          <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+          <span class="font-semibold text-brand-600">Research Paper</span>
+        </div>
+
+        <h2 id="modal-title" class="text-xl sm:text-2xl font-bold text-slate-900 leading-snug"></h2>
+        
+        <p id="modal-authors" class="text-sm font-medium text-slate-600 italic"></p>
+        
+        <div class="border-t border-slate-100 pt-4">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Abstract</h4>
+          <p id="modal-abstract" class="text-slate-600 text-sm leading-relaxed whitespace-pre-line"></p>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="border-t border-slate-100 pt-4 mt-6 flex justify-end">
+        <a 
+          id="modal-download"
+          href="#" 
+          download 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-semibold shadow-sm transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-2 shrink-0">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Download PDF Document
+        </a>
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  const modal = document.getElementById('abstract-modal');
+  const closeBtn = document.getElementById('close-abstract-modal');
+  
+  const modalTitle = document.getElementById('modal-title');
+  const modalAuthors = document.getElementById('modal-authors');
+  const modalDate = document.getElementById('modal-date');
+  const modalAbstract = document.getElementById('modal-abstract');
+  const modalDownload = document.getElementById('modal-download') as HTMLAnchorElement;
+
+  if (modal) {
+    // Event delegation: listen for clicks on any publication-detail-trigger
+    document.addEventListener('click', (e) => {
+      const trigger = (e.target as HTMLElement).closest('.publication-detail-trigger');
+      if (trigger) {
+        const card = trigger.closest('.publication-card');
+        if (card) {
+          const title = card.getAttribute('data-title') || '';
+          const authors = card.getAttribute('data-authors') || '';
+          const date = card.getAttribute('data-date') || '';
+          const abstract = card.getAttribute('data-abstract') || '';
+          const pdf = card.getAttribute('data-pdf') || '#';
+
+          if (modalTitle) modalTitle.textContent = title;
+          if (modalAuthors) modalAuthors.textContent = authors;
+          if (modalDate) modalDate.textContent = date;
+          if (modalAbstract) modalAbstract.textContent = abstract;
+          if (modalDownload) {
+            modalDownload.href = pdf;
+          }
+
+          modal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        }
+      }
+    });
+
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
+</script>

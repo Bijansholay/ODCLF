@@ -34,10 +34,17 @@ const coverUrl = publication.coverImage
   : null;
 ---
 
-<div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-shadow duration-300 flex flex-col md:flex-row gap-6">
+<div 
+  class="publication-card bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-shadow duration-300 flex flex-col md:flex-row gap-6"
+  data-title={publication.title}
+  data-authors={authorList}
+  data-date={formattedDate}
+  data-abstract={publication.abstract || 'No abstract available for this publication.'}
+  data-pdf={publication.fileUrl}
+>
   <!-- Cover Thumbnail (Optional) -->
   {coverUrl ? (
-    <div class="w-32 shrink-0 hidden sm:block">
+    <div class="w-32 shrink-0 hidden sm:block cursor-pointer hover:opacity-90 transition-opacity publication-detail-trigger" aria-label="Read details">
       <img 
         src={coverUrl} 
         alt={publication.title} 
@@ -46,7 +53,7 @@ const coverUrl = publication.coverImage
       />
     </div>
   ) : (
-    <div class="w-32 h-44 bg-slate-50 border border-slate-200 rounded shrink-0 hidden sm:flex flex-col items-center justify-center text-slate-300">
+    <div class="w-32 h-44 bg-slate-50 border border-slate-200 rounded shrink-0 hidden sm:flex flex-col items-center justify-center text-slate-300 cursor-pointer hover:bg-slate-100/80 transition-colors publication-detail-trigger" aria-label="Read details">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-12 h-12">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
       </svg>
@@ -64,7 +71,7 @@ const coverUrl = publication.coverImage
         <span class="font-semibold text-brand-600">Research Paper</span>
       </div>
 
-      <h3 class="text-lg font-bold text-slate-900 mb-2 leading-snug">
+      <h3 class="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-brand-600 transition-colors cursor-pointer publication-detail-trigger">
         {publication.title}
       </h3>
 
@@ -79,8 +86,8 @@ const coverUrl = publication.coverImage
       )}
     </div>
 
-    <!-- Download PDF -->
-    <div class="pt-2">
+    <!-- Actions -->
+    <div class="pt-2 flex flex-wrap gap-3">
       <a 
         href={publication.fileUrl} 
         download 
@@ -91,8 +98,15 @@ const coverUrl = publication.coverImage
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-2 shrink-0">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
         </svg>
-        Download PDF Document
+        Download PDF
       </a>
+      
+      <button 
+        type="button"
+        class="publication-detail-trigger inline-flex items-center justify-center px-4 py-2 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500"
+      >
+        Read Abstract
+      </button>
     </div>
   </div>
 </div>
