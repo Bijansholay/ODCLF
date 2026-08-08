@@ -4,17 +4,18 @@ import MemberCard from '../components/MemberCard.astro';
 import { client } from '../lib/sanity';
 import groq from 'groq';
 
-let activeMembers = [];
+let members = [];
 let pastMembers = [];
 
 try {
   // Fetch active officers sorted by 'order' ascending
-  activeMembers = await client.fetch(groq`
+  members = await client.fetch(groq`
     *[_type == "member" && active == true] | order(order asc) {
       name,
       role,
       photo,
       bio,
+      category,
       active
     }
   `);
@@ -26,12 +27,18 @@ try {
       role,
       photo,
       bio,
+      category,
       active
     }
   `);
 } catch (e) {
   console.error("Error fetching members:", e);
 }
+
+// Split active members by their category field
+const coordinators = members.filter(m => m.category === 'coordinator');
+const exco = members.filter(m => m.category === 'exco');
+const distinguished = members.filter(m => !m.category || m.category === 'distinguished');
 ---
 
 <Layout title="Members" description="Meet the active officers and past board members of the forum.">
@@ -42,26 +49,62 @@ try {
       <p class="text-slate-500 mt-2">The dedicated team behind the organization, steering discussions and initiatives.</p>
     </div>
 
-    <!-- Active Officers -->
+    <!-- National Coordinator -->
     <section class="space-y-8">
       <div class="border-l-4 border-brand-500 pl-4 py-1">
-        <h2 class="text-2xl font-bold text-slate-900">Current Officers</h2>
-        <p class="text-sm text-slate-500 mt-0.5">The active leaders organizing forums and publishing research updates.</p>
+        <h2 class="text-2xl font-bold text-slate-900">National Coordinator</h2>
+        <p class="text-sm text-slate-500 mt-0.5">The leadership representing and directing the forum.</p>
       </div>
 
-      {activeMembers && activeMembers.length > 0 ? (
+      {coordinators && coordinators.length > 0 ? (
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {activeMembers.map((member) => (
+          {coordinators.map((member) => (
             <MemberCard member={member} />
           ))}
         </div>
       ) : (
-        <div class="text-center py-16 bg-white rounded-2xl border border-slate-100 shadow-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-16 h-16 text-slate-300 mx-auto mb-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-          </svg>
-          <p class="text-slate-500 font-medium">No active officers found</p>
-          <p class="text-slate-400 text-sm mt-1">Officer profiles will display here once added to the CMS.</p>
+        <div class="text-center py-12 bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <p class="text-slate-400 italic text-sm">No coordinator profiles found. Add profiles with category 'National Coordinator' in the CMS.</p>
+        </div>
+      )}
+    </section>
+
+    <!-- Interim Coordinating (EXCO) Officers -->
+    <section class="space-y-8 pt-8 border-t border-slate-100">
+      <div class="border-l-4 border-brand-500 pl-4 py-1">
+        <h2 class="text-2xl font-bold text-slate-900">Interim Coordinating (EXCO) Officers</h2>
+        <p class="text-sm text-slate-500 mt-0.5">The executive officers steering discussions, events, and academic projects.</p>
+      </div>
+
+      {exco && exco.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {exco.map((member) => (
+            <MemberCard member={member} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12 bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <p class="text-slate-400 italic text-sm">No EXCO profiles found. Add profiles with category 'Interim Coordinating (EXCO) Officer' in the CMS.</p>
+        </div>
+      )}
+    </section>
+
+    <!-- Distinguished Members -->
+    <section class="space-y-8 pt-8 border-t border-slate-100">
+      <div class="border-l-4 border-brand-500 pl-4 py-1">
+        <h2 class="text-2xl font-bold text-slate-900">Distinguished Members</h2>
+        <p class="text-sm text-slate-500 mt-0.5">Academic members of Offa descent participating in our forums and research.</p>
+      </div>
+
+      {distinguished && distinguished.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {distinguished.map((member) => (
+            <MemberCard member={member} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12 bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <p class="text-slate-400 italic text-sm">No distinguished member profiles found. Add profiles with category 'Distinguished Member' in the CMS.</p>
         </div>
       )}
     </section>
@@ -83,3 +126,35 @@ try {
     )}
   </div>
 </Layout>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.toggle-bio-btn');
+    if (btn) {
+      const container = btn.closest('.bio-container');
+      if (container) {
+        const truncated = container.querySelector('.bio-truncated');
+        const full = container.querySelector('.bio-full');
+
+        if (truncated && full) {
+          const isExpanded = truncated.classList.contains('hidden');
+          if (isExpanded) {
+            // Collapse
+            truncated.classList.remove('hidden');
+            full.classList.add('hidden');
+            btn.textContent = 'Read Biography';
+            
+            // Smoothly scroll the card back into view if collapsing
+            const card = btn.closest('.member-card');
+            card?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            // Expand
+            truncated.classList.add('hidden');
+            full.classList.remove('hidden');
+            btn.textContent = 'Read Less';
+          }
+        }
+      }
+    }
+  });
+</script>

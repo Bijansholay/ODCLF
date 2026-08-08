@@ -15,8 +15,23 @@ export default defineType({
       name: 'role',
       title: 'Role',
       type: 'string',
-      description: 'e.g. President, Secretary, Treasurer',
+      description: 'e.g. Coordinator, Secretary, Treasurer',
       validation: (Rule: any) => Rule.required(),
+    }),
+    defineField({
+      name: 'category',
+      title: 'Member Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'National Coordinator', value: 'coordinator' },
+          { title: 'Interim Coordinating (EXCO) Officer', value: 'exco' },
+          { title: 'Distinguished Member', value: 'distinguished' }
+        ],
+        layout: 'radio'
+      },
+      validation: (Rule: any) => Rule.required(),
+      initialValue: 'distinguished'
     }),
     defineField({
       name: 'photo',
