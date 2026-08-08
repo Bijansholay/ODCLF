@@ -55,6 +55,18 @@ export default defineType({
       initialValue: 10,
     }),
     defineField({
+      name: 'email',
+      title: 'Email Address',
+      type: 'string',
+      description: 'Contact email address of the member.',
+    }),
+    defineField({
+      name: 'phone',
+      title: 'Phone Number',
+      type: 'string',
+      description: 'Contact phone number of the member.',
+    }),
+    defineField({
       name: 'active',
       title: 'Active Officer',
       type: 'boolean',

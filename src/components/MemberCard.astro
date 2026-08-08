@@ -7,6 +7,8 @@ interface Props {
     role: string;
     photo?: any;
     bio?: string;
+    email?: string;
+    phone?: string;
     active: boolean;
   };
 }
@@ -34,6 +36,8 @@ const initials = member.name
   data-photo={imageUrl || ''}
   data-initials={initials}
   data-bio={member.bio || ''}
+  data-email={member.email || ''}
+  data-phone={member.phone || ''}
 >
   <!-- Photo / Placeholder -->
   <div class="member-detail-trigger w-24 h-24 rounded-full overflow-hidden mb-4 bg-slate-800 shrink-0 border-2 border-brand-400 relative shadow-md shadow-slate-950/40 cursor-pointer hover:scale-105 transition-all duration-300" aria-label="View biography">
