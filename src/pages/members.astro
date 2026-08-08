@@ -16,7 +16,7 @@ try {
       photo,
       bio,
       category,
-      email,
+      emails,
       phone,
       active
     }
@@ -30,7 +30,7 @@ try {
       photo,
       bio,
       category,
-      email,
+      emails,
       phone,
       active
     }
@@ -150,11 +150,8 @@ const distinguished = members.filter(m => !m.category || m.category === 'disting
         
         <!-- Contact details section under the photo -->
         <div id="modal-member-contacts" class="mt-4 space-y-2.5 text-center w-full hidden border-t border-brand-900/60 pt-4">
-          <div id="modal-email-row" class="flex items-center justify-center space-x-2 text-xs text-slate-300 hover:text-white transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand-400 shrink-0">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-            </svg>
-            <a id="modal-member-email" href="" class="hover:underline truncate max-w-[170px]"></a>
+          <div id="modal-emails-container" class="space-y-2 flex flex-col items-center">
+            <!-- Dynamic emails will render here -->
           </div>
           <div id="modal-phone-row" class="flex items-center justify-center space-x-2 text-xs text-slate-300">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand-400 shrink-0">
@@ -204,24 +201,40 @@ const distinguished = members.filter(m => !m.category || m.category === 'disting
           const bio = card.getAttribute('data-bio') || 'No biography provided.';
           const photo = card.getAttribute('data-photo') || '';
           const initials = card.getAttribute('data-initials') || '??';
-          const email = card.getAttribute('data-email') || '';
+          const emailsAttr = card.getAttribute('data-emails') || '[]';
           const phone = card.getAttribute('data-phone') || '';
+
+          let emails = [];
+          try {
+            emails = JSON.parse(emailsAttr);
+          } catch (e) {
+            emails = [];
+          }
 
           if (modalName) modalName.textContent = name;
           if (modalRole) modalRole.textContent = role;
           if (modalBio) modalBio.textContent = bio;
 
-          // Update Email link & visibility
-          const emailRow = document.getElementById('modal-email-row');
-          const emailLink = document.getElementById('modal-member-email') as HTMLAnchorElement;
-          if (email) {
-            if (emailLink) {
-              emailLink.href = `mailto:${email}`;
-              emailLink.textContent = email;
+          // Render multiple emails dynamically
+          const emailsContainer = document.getElementById('modal-emails-container');
+          if (emailsContainer) {
+            emailsContainer.innerHTML = ''; // clear out old ones
+            if (emails && emails.length > 0) {
+              emails.forEach((email: string) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-center space-x-2 text-xs text-slate-300 hover:text-white transition-colors w-full';
+                row.innerHTML = `
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand-400 shrink-0">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                  </svg>
+                  <a href="mailto:${email}" class="hover:underline truncate max-w-[170px] text-slate-300 hover:text-white font-medium">${email}</a>
+                `;
+                emailsContainer.appendChild(row);
+              });
+              emailsContainer.classList.remove('hidden');
+            } else {
+              emailsContainer.classList.add('hidden');
             }
-            emailRow?.classList.remove('hidden');
-          } else {
-            emailRow?.classList.add('hidden');
           }
 
           // Update Phone link & visibility
@@ -234,9 +247,9 @@ const distinguished = members.filter(m => !m.category || m.category === 'disting
             phoneRow?.classList.add('hidden');
           }
 
-          // Show Contacts Block container if either exists
+          // Show Contacts Block container if either emails or phone exists
           const contactsBlock = document.getElementById('modal-member-contacts');
-          if (email || phone) {
+          if (emails.length > 0 || phone) {
             contactsBlock?.classList.remove('hidden');
           } else {
             contactsBlock?.classList.add('hidden');

@@ -7,7 +7,7 @@ interface Props {
     role: string;
     photo?: any;
     bio?: string;
-    email?: string;
+    emails?: string[];
     phone?: string;
     active: boolean;
   };
@@ -36,7 +36,7 @@ const initials = member.name
   data-photo={imageUrl || ''}
   data-initials={initials}
   data-bio={member.bio || ''}
-  data-email={member.email || ''}
+  data-emails={JSON.stringify(member.emails || [])}
   data-phone={member.phone || ''}
 >
   <!-- Photo / Placeholder -->

@@ -55,10 +55,11 @@ export default defineType({
       initialValue: 10,
     }),
     defineField({
-      name: 'email',
-      title: 'Email Address',
-      type: 'string',
-      description: 'Contact email address of the member.',
+      name: 'emails',
+      title: 'Email Addresses',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Contact email addresses of the member.',
     }),
     defineField({
       name: 'phone',
