@@ -25,13 +25,18 @@ const initials = member.name
       .slice(0, 2)
       .toUpperCase()
   : '??';
-
-const showToggle = member.bio && member.bio.length > 120;
 ---
 
-<div class="member-card bg-gradient-to-br from-brand-900 to-slate-950 rounded-2xl shadow-lg border-2 border-brand-500/30 p-6 flex flex-col items-center text-center hover:-translate-y-1 hover:border-brand-400 hover:shadow-2xl hover:shadow-brand-500/15 transition-all duration-300">
+<div 
+  class="member-card bg-gradient-to-br from-brand-900 to-slate-950 rounded-2xl shadow-lg border-2 border-brand-500/30 p-6 flex flex-col items-center text-center hover:-translate-y-1 hover:border-brand-400 hover:shadow-2xl hover:shadow-brand-500/15 transition-all duration-300"
+  data-name={member.name}
+  data-role={member.role}
+  data-photo={imageUrl || ''}
+  data-initials={initials}
+  data-bio={member.bio || ''}
+>
   <!-- Photo / Placeholder -->
-  <div class="w-24 h-24 rounded-full overflow-hidden mb-4 bg-slate-800 shrink-0 border-2 border-brand-400 relative shadow-md shadow-slate-950/40">
+  <div class="member-detail-trigger w-24 h-24 rounded-full overflow-hidden mb-4 bg-slate-800 shrink-0 border-2 border-brand-400 relative shadow-md shadow-slate-950/40 cursor-pointer hover:scale-105 transition-all duration-300" aria-label="View biography">
     {imageUrl ? (
       <img src={imageUrl} alt={member.name} class="w-full h-full object-cover" loading="lazy" />
     ) : (
@@ -42,34 +47,23 @@ const showToggle = member.bio && member.bio.length > 120;
   </div>
 
   <!-- Name and Role -->
-  <h3 class="text-lg font-bold text-white leading-snug">{member.name}</h3>
+  <h3 class="member-detail-trigger text-lg font-bold text-white leading-snug cursor-pointer hover:text-brand-300 transition-colors">{member.name}</h3>
   <span class="inline-block mt-1.5 text-xs font-semibold uppercase tracking-wider text-brand-300 bg-brand-950 border border-brand-900 px-2.5 py-0.5 rounded-full mb-4">
     {member.role}
   </span>
 
   <!-- Bio -->
   {member.bio ? (
-    <div class="bio-container flex-grow flex flex-col justify-between w-full">
-      {showToggle ? (
-        <>
-          <p class="bio-truncated text-slate-300 text-sm leading-relaxed line-clamp-3">
-            {member.bio}
-          </p>
-          <p class="bio-full hidden text-slate-300 text-sm leading-relaxed whitespace-pre-line text-left">
-            {member.bio}
-          </p>
-          <button 
-            type="button"
-            class="toggle-bio-btn mt-4 text-xs font-bold text-brand-400 hover:text-brand-300 focus:outline-none transition-colors self-center"
-          >
-            Read Biography
-          </button>
-        </>
-      ) : (
-        <p class="text-slate-300 text-sm leading-relaxed">
-          {member.bio}
-        </p>
-      )}
+    <div class="flex-grow flex flex-col justify-between w-full">
+      <p class="text-slate-300 text-sm leading-relaxed line-clamp-3">
+        {member.bio}
+      </p>
+      <button 
+        type="button"
+        class="member-detail-trigger mt-4 text-xs font-bold text-brand-400 hover:text-brand-300 focus:outline-none transition-colors self-center cursor-pointer"
+      >
+        Read Biography
+      </button>
     </div>
   ) : (
     <p class="text-slate-400 text-xs italic">

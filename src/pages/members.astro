@@ -125,36 +125,105 @@ const distinguished = members.filter(m => !m.category || m.category === 'disting
       </section>
     )}
   </div>
+  <!-- Member Details Lightbox Modal -->
+  <div id="member-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+    <div class="bg-gradient-to-br from-brand-900 to-slate-950 w-full max-w-2xl rounded-2xl shadow-2xl border-2 border-brand-500/30 p-6 sm:p-8 relative flex flex-col md:flex-row gap-6 max-h-[90vh] overflow-hidden text-white">
+      
+      <!-- Close Button -->
+      <button id="close-member-modal" class="absolute top-4 right-4 text-slate-300 hover:text-white p-2 focus:outline-none bg-slate-950/60 hover:bg-brand-950 rounded-full border border-brand-900 transition-colors" aria-label="Close modal">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Large Member Photo Container -->
+      <div class="w-32 h-32 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shrink-0 border-2 border-brand-400 bg-slate-800 relative shadow-lg mx-auto md:mx-0 flex items-center justify-center">
+        <img id="modal-member-photo" src="" alt="" class="w-full h-full object-cover hidden" />
+        <div id="modal-member-initials" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-600 to-brand-700 text-white font-bold text-3xl tracking-wider hidden">
+        </div>
+      </div>
+
+      <!-- Text Details Container -->
+      <div class="flex-grow flex flex-col justify-between overflow-y-auto max-h-[50vh] md:max-h-[70vh] pr-2 space-y-4">
+        <div>
+          <h2 id="modal-member-name" class="text-2xl font-bold tracking-tight text-white"></h2>
+          <span id="modal-member-role" class="inline-block mt-1.5 text-xs font-semibold uppercase tracking-wider text-brand-300 bg-brand-950 border border-brand-900 px-2.5 py-0.5 rounded-full"></span>
+          
+          <div class="border-t border-brand-900/60 pt-4 mt-4">
+            <h4 class="text-xs font-bold text-brand-400 uppercase tracking-wider mb-2">Biography</h4>
+            <p id="modal-member-bio" class="text-slate-300 text-sm leading-relaxed whitespace-pre-line text-left"></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </Layout>
 
 <script>
-  document.addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest('.toggle-bio-btn');
-    if (btn) {
-      const container = btn.closest('.bio-container');
-      if (container) {
-        const truncated = container.querySelector('.bio-truncated');
-        const full = container.querySelector('.bio-full');
+  const modal = document.getElementById('member-modal');
+  const closeBtn = document.getElementById('close-member-modal');
+  
+  const modalName = document.getElementById('modal-member-name');
+  const modalRole = document.getElementById('modal-member-role');
+  const modalBio = document.getElementById('modal-member-bio');
+  const modalPhoto = document.getElementById('modal-member-photo') as HTMLImageElement;
+  const modalInitials = document.getElementById('modal-member-initials');
 
-        if (truncated && full) {
-          const isExpanded = truncated.classList.contains('hidden');
-          if (isExpanded) {
-            // Collapse
-            truncated.classList.remove('hidden');
-            full.classList.add('hidden');
-            btn.textContent = 'Read Biography';
-            
-            // Smoothly scroll the card back into view if collapsing
-            const card = btn.closest('.member-card');
-            card?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (modal) {
+    // Event delegation: listen for click on any element with .member-detail-trigger
+    document.addEventListener('click', (e) => {
+      const trigger = (e.target as HTMLElement).closest('.member-detail-trigger');
+      if (trigger) {
+        const card = trigger.closest('.member-card');
+        if (card) {
+          const name = card.getAttribute('data-name') || '';
+          const role = card.getAttribute('data-role') || '';
+          const bio = card.getAttribute('data-bio') || 'No biography provided.';
+          const photo = card.getAttribute('data-photo') || '';
+          const initials = card.getAttribute('data-initials') || '??';
+
+          if (modalName) modalName.textContent = name;
+          if (modalRole) modalRole.textContent = role;
+          if (modalBio) modalBio.textContent = bio;
+
+          if (photo) {
+            if (modalPhoto) {
+              modalPhoto.src = photo;
+              modalPhoto.alt = name;
+              modalPhoto.classList.remove('hidden');
+            }
+            if (modalInitials) modalInitials.classList.add('hidden');
           } else {
-            // Expand
-            truncated.classList.add('hidden');
-            full.classList.remove('hidden');
-            btn.textContent = 'Read Less';
+            if (modalPhoto) modalPhoto.classList.add('hidden');
+            if (modalInitials) {
+              modalInitials.textContent = initials;
+              modalInitials.classList.remove('hidden');
+            }
           }
+
+          modal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
         }
       }
-    }
-  });
+    });
+
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
 </script>
