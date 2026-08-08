@@ -6,6 +6,7 @@ interface Props {
     name: string;
     role: string;
     photo?: any;
+    shortBio?: string;
     bio?: string;
     emails?: string[];
     phone?: string;
@@ -57,7 +58,21 @@ const initials = member.name
   </span>
 
   <!-- Bio -->
-  {member.bio ? (
+  {member.shortBio ? (
+    <div class="flex-grow flex flex-col justify-between w-full">
+      <p class="text-slate-300 text-sm leading-relaxed line-clamp-3">
+        {member.shortBio}
+      </p>
+      {member.bio && (
+        <button 
+          type="button"
+          class="member-detail-trigger mt-4 text-xs font-bold text-brand-400 hover:text-brand-300 focus:outline-none transition-colors self-center cursor-pointer"
+        >
+          Read Full Biography
+        </button>
+      )}
+    </div>
+  ) : member.bio ? (
     <div class="flex-grow flex flex-col justify-between w-full">
       <p class="text-slate-300 text-sm leading-relaxed line-clamp-3">
         {member.bio}
@@ -66,7 +81,7 @@ const initials = member.name
         type="button"
         class="member-detail-trigger mt-4 text-xs font-bold text-brand-400 hover:text-brand-300 focus:outline-none transition-colors self-center cursor-pointer"
       >
-        Read Biography
+        Read Full Biography
       </button>
     </div>
   ) : (

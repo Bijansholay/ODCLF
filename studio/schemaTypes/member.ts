@@ -42,10 +42,16 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'bio',
-      title: 'Biography',
+      name: 'shortBio',
+      title: 'Short Biography',
       type: 'text',
-      description: 'A brief bio of the member.',
+      description: 'A brief 1-2 sentence introduction shown on the card grid.',
+    }),
+    defineField({
+      name: 'bio',
+      title: 'Full Biography',
+      type: 'text',
+      description: 'The complete, detailed biography shown in the lightbox details modal.',
     }),
     defineField({
       name: 'order',

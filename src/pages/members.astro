@@ -14,6 +14,7 @@ try {
       name,
       role,
       photo,
+      shortBio,
       bio,
       category,
       emails,
@@ -28,6 +29,7 @@ try {
       name,
       role,
       photo,
+      shortBio,
       bio,
       category,
       emails,
@@ -57,7 +59,7 @@ const distinguished = members.filter(m => !m.category || m.category === 'disting
     <section class="space-y-8">
       <div class="border-l-4 border-brand-500 pl-4 py-1">
         <h2 class="text-2xl font-bold text-slate-900">National Coordinator</h2>
-        <p class="text-sm text-slate-500 mt-0.5">The leadership representing and directing the forum.</p>
+        <p class="text-sm text-slate-500 mt-0.5">The National Coordinator provides overall leadership and coordination, driving the realisation of ODCLF’s objectives, purpose, programmes, and sustainable developmen</p>
       </div>
 
       {coordinators && coordinators.length > 0 ? (
@@ -77,7 +79,7 @@ const distinguished = members.filter(m => !m.category || m.category === 'disting
     <section class="space-y-8 pt-8 border-t border-slate-100">
       <div class="border-l-4 border-brand-500 pl-4 py-1">
         <h2 class="text-2xl font-bold text-slate-900">Interim Coordinating (EXCO) Officers</h2>
-        <p class="text-sm text-slate-500 mt-0.5">The executive officers steering discussions, events, and academic projects.</p>
+        <p class="text-sm text-slate-500 mt-0.5">The Interim Executive Committee collectively supports and complements the efforts of the National Coordinator in an executive capacity towards driving the realisation of ODCLF’s objectives, purpose, and sustainable development.</p>
       </div>
 
       {exco && exco.length > 0 ? (
@@ -97,7 +99,7 @@ const distinguished = members.filter(m => !m.category || m.category === 'disting
     <section class="space-y-8 pt-8 border-t border-slate-100">
       <div class="border-l-4 border-brand-500 pl-4 py-1">
         <h2 class="text-2xl font-bold text-slate-900">Distinguished Members</h2>
-        <p class="text-sm text-slate-500 mt-0.5">Academic members of Offa descent participating in our forums and research.</p>
+        <p class="text-sm text-slate-500 mt-0.5">The Distinguished Members contribute their knowledge, skills, experience, and professional networks towards advancing ODCLF’s objectives, purpose, and sustainable development.</p>
       </div>
 
       {distinguished && distinguished.length > 0 ? (
