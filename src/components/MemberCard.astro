@@ -60,7 +60,7 @@ const initials = member.name
   <!-- Bio -->
   {member.shortBio ? (
     <div class="flex-grow flex flex-col justify-between w-full">
-      <p class="text-slate-300 text-sm leading-relaxed line-clamp-3">
+      <p class="text-slate-300 text-xs sm:text-[13px] leading-relaxed">
         {member.shortBio}
       </p>
       {member.bio && (
@@ -74,7 +74,7 @@ const initials = member.name
     </div>
   ) : member.bio ? (
     <div class="flex-grow flex flex-col justify-between w-full">
-      <p class="text-slate-300 text-sm leading-relaxed line-clamp-3">
+      <p class="text-slate-300 text-xs sm:text-[13px] leading-relaxed line-clamp-4">
         {member.bio}
       </p>
       <button 
