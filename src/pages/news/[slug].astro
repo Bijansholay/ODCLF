@@ -11,7 +11,11 @@ export async function getStaticPaths() {
   } catch (e) {
     console.error("Error fetching slugs for news paths:", e);
   }
-  return slugs.map((slug: string) => ({
+  
+  // Filter out invalid/empty slugs (e.g. slashes or URLs pasted by mistake)
+  const validSlugs = slugs.filter((slug: string) => slug && !slug.includes('/') && !slug.startsWith('http'));
+
+  return validSlugs.map((slug: string) => ({
     params: { slug },
   }));
 }
