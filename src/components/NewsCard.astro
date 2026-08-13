@@ -22,22 +22,22 @@ const formattedDate = post.publishedAt
   : 'Recently';
 
 const imageUrl = post.coverImage
-  ? urlFor(post.coverImage).width(600).height(400).url()
+  ? urlFor(post.coverImage).width(600).url()
   : null;
 ---
 
 <article class="bg-white rounded-xl shadow-sm hover:shadow-md border border-slate-100 overflow-hidden flex flex-col h-full transition-all duration-300 group">
   <!-- Cover Image / Fallback -->
-  <a href={`/news/${post.slug.current}`} class="relative block overflow-hidden aspect-video bg-slate-100">
+  <a href={`/news/${post.slug.current}`} class="relative block overflow-hidden bg-slate-100">
     {imageUrl ? (
       <img 
         src={imageUrl} 
         alt={post.title} 
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+        class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" 
         loading="lazy"
       />
     ) : (
-      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-brand-50 text-brand-300">
+      <div class="w-full aspect-video flex items-center justify-center bg-gradient-to-br from-slate-100 to-brand-50 text-brand-300">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v3.75m-18 0A2.25 2.25 0 0 0 5.25 12h13.5M3 12h18" />
         </svg>
