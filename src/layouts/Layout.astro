@@ -62,5 +62,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://odclf-fo
     </main>
 
     <Footer />
+    <script>
+      import { inject } from '@vercel/analytics';
+      inject();
+    </script>
   </body>
 </html>
