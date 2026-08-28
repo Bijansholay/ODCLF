@@ -12,8 +12,13 @@ export async function getStaticPaths() {
     console.error("Error fetching slugs for news paths:", e);
   }
   
-  // Filter out invalid/empty slugs (e.g. slashes or URLs pasted by mistake)
-  const validSlugs = slugs.filter((slug: string) => slug && !slug.includes('/') && !slug.startsWith('http'));
+  // Filter out invalid, empty, or dangerous slugs (e.g., '.', '|', URLs, or routing overrides like 'index')
+  const validSlugs = slugs.filter((slug: string) => {
+    return slug && 
+           /^[a-zA-Z0-9-_]+$/.test(slug) && 
+           slug !== 'index' && 
+           slug !== 'news';
+  });
 
   return validSlugs.map((slug: string) => ({
     params: { slug },
