@@ -8,9 +8,9 @@ let members = [];
 let pastMembers = [];
 
 try {
-  // Fetch active officers sorted by 'order' ascending
+  // Fetch active officers sorted by 'order' ascending (falling back to 9999 for unassigned order)
   members = await client.fetch(groq`
-    *[_type == "member" && active == true] | order(order asc) {
+    *[_type == "member" && active == true] | order(coalesce(order, 9999) asc, name asc) {
       name,
       role,
       photo,
@@ -19,13 +19,14 @@ try {
       category,
       emails,
       phone,
-      active
+      active,
+      order
     }
   `);
 
-  // Fetch past officers sorted by 'order' ascending
+  // Fetch past officers sorted by 'order' ascending (falling back to 9999 for unassigned order)
   pastMembers = await client.fetch(groq`
-    *[_type == "member" && active == false] | order(order asc) {
+    *[_type == "member" && active == false] | order(coalesce(order, 9999) asc, name asc) {
       name,
       role,
       photo,
@@ -34,7 +35,8 @@ try {
       category,
       emails,
       phone,
-      active
+      active,
+      order
     }
   `);
 } catch (e) {

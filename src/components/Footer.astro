@@ -51,9 +51,17 @@ const studioUrl = import.meta.env.PUBLIC_SANITY_STUDIO_URL || 'https://manage.sa
     </div>
 
     <!-- Copyright -->
-    <div class="mt-8 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
-      <p>&copy; {currentYear} ODCLF Forum. All rights reserved.</p>
-      <p class="mt-2 sm:mt-0 text-slate-500">
+    <div class="mt-8 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-y-4">
+      <div class="flex flex-col sm:flex-row items-center gap-x-4 gap-y-2 text-center sm:text-left">
+        <p>&copy; {currentYear} ODCLF Forum. All rights reserved.</p>
+        <span class="hidden sm:inline text-slate-700">|</span>
+        <div class="flex space-x-3">
+          <a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+          <span class="text-slate-700">&bull;</span>
+          <a href="/cookie-policy" class="hover:text-white transition-colors">Cookie Policy</a>
+        </div>
+      </div>
+      <p class="mt-2 sm:mt-0 text-slate-500 text-center sm:text-right">
         Developed by <span class="text-slate-300 font-medium">Najib Sholadoye</span> 
         (<a href="mailto:najibsholadoye@gmail.com" class="hover:text-white transition-colors underline">Email</a> | 
         <a href="https://www.linkedin.com/in/najib-sholadoye-499449302" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline">LinkedIn</a>) 

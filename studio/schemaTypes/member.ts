@@ -81,18 +81,32 @@ export default defineType({
       initialValue: true,
     }),
   ],
+  orderings: [
+    {
+      title: 'Display Order (1, 2, 3...)',
+      name: 'orderAsc',
+      by: [{ field: 'order', direction: 'asc' }],
+    },
+    {
+      title: 'Name (A-Z)',
+      name: 'nameAsc',
+      by: [{ field: 'name', direction: 'asc' }],
+    },
+  ],
   preview: {
     select: {
       title: 'name',
       subtitle: 'role',
       media: 'photo',
       active: 'active',
+      order: 'order',
     },
     prepare(selection) {
-      const { title, subtitle, media, active } = selection;
+      const { title, subtitle, media, active, order } = selection;
+      const orderTag = order !== undefined && order !== null ? `[Order: ${order}] ` : '[No Order] ';
       return {
         title: title,
-        subtitle: `${subtitle} (${active ? 'Active' : 'Inactive'})`,
+        subtitle: `${orderTag}${subtitle || 'No Role'} (${active ? 'Active' : 'Inactive'})`,
         media: media,
       };
     },
